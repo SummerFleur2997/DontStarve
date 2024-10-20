@@ -1,0 +1,8 @@
+﻿{
+  "Name": "DontStarve",
+  "Author": "Yurn",
+  "Version": "1.0.0",
+  "UniqueID": "DontStarve",
+  "EntryDll": "DontStarve.dll",
+  "MinimumApiVersion": "4.0.0"
+}
