@@ -1,14 +1,14 @@
-﻿using StardewModdingAPI.Events;
+﻿using DontStarve.Sanity;
 using StardewValley;
 
 namespace DontStarve.Buff;
 
-internal class Sanity {
+internal static class Sanity {
     private const string BUFF = "DS_Heal_Sanity";
-    private bool lastHasBuff;
-    private int lastTime = Game1.timeOfDay;
+    private static bool lastHasBuff;
+    private static int lastTime = Game1.timeOfDay;
 
-    public void update(TimeChangedEventArgs e) {
+    public static void update() {
         var player = Game1.player;
         var hasBuff = player.hasBuff(BUFF);
 
@@ -17,7 +17,7 @@ internal class Sanity {
                 lastTime = Game1.timeOfDay;
             }
 
-            var time = e.NewTime;
+            var time = Game1.timeOfDay;
             if (time - lastTime >= 5) {
                 var times = (time - lastTime) / 5;
                 if (player.getSanity() < player.getMaxSanity()) {

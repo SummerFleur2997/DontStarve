@@ -1,5 +1,4 @@
-﻿using StardewModdingAPI;
-using StardewValley;
+﻿using StardewValley;
 
 namespace DontStarve.Buff;
 
@@ -9,10 +8,7 @@ internal static class Electric {
     private static bool lastHasWeatherAddition;
 
     public static void update() {
-        if (!Context.IsWorldReady || !Game1.shouldTimePass()) return;
-        
         var player = Game1.player;
-        
         var hasBuff = player.hasBuff(BUFF);
         if (hasBuff != lastHasBuff) {
             if (hasBuff) {

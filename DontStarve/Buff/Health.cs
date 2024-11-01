@@ -1,14 +1,13 @@
-﻿using StardewModdingAPI.Events;
-using StardewValley;
+﻿using StardewValley;
 
 namespace DontStarve.Buff;
 
-internal class Health {
+internal static class Health {
     private const string BUFF = "DS_Heal_Health";
-    private bool lastHasBuff;
-    private int lastTime = Game1.timeOfDay;
+    private static bool lastHasBuff;
+    private static int lastTime = Game1.timeOfDay;
 
-    public void update(TimeChangedEventArgs e) {
+    public static void update() {
         var player = Game1.player;
         var hasBuff = player.hasBuff(BUFF);
 
@@ -17,7 +16,7 @@ internal class Health {
                 lastTime = Game1.timeOfDay;
             }
 
-            var time = e.NewTime;
+            var time = Game1.timeOfDay;
             if (time - lastTime >= 5) {
                 var times = (time - lastTime) / 5;
                 if (player.health < player.maxHealth) {
