@@ -14,7 +14,7 @@ public static class Hud {
             return new Vector2(sizeUi.X - (Game1.showingHealth ? 171 : 116), sizeUi.Y);
         }
     }
-    
+
     public static void OnRenderingHud(object? _, RenderingHudEventArgs e) {
         if (!Context.IsWorldReady || Game1.CurrentEvent != null) return;
 
@@ -45,7 +45,8 @@ public static class Hud {
             color: BarsInformation.sanityColor,
             rotation: 3.138997f,
             origin: new Vector2(0.5f, 0.5f),
-            scale: 1f, SpriteEffects.None,
+            scale: 1f,
+            effects: SpriteEffects.None,
             layerDepth: 1f
         );
 
