@@ -4,54 +4,74 @@ using StardewValley.Locations;
 namespace DontStarve.Sanity;
 
 public static class MineShaft {
-    private static int lastTime = Game1.timeOfDay;
-    
-    public static void update() {
+    private static long deviation;
+
+    public static void update(long time) {
         var player = Game1.player;
         var location = Game1.currentLocation;
+
+        if (deviation < 0) {
+            deviation++;
+            return;
+        }
+        
         var value = 0.0;
         if (location is StardewValley.Locations.MineShaft mineShaft) {
             // 矿井
-            value = 0.035;
+            value = 0.0014;
             // 黑暗层
             if (mineShaft.isDarkArea()) {
-                value = 0.35;
+                value = 0.014;
             }
             // 骷髅矿井
             if (mineShaft.mineLevel > 120) {
-                value = 0.07;
+                value = 0.0028;
             }
             // 骷髅矿井 880 层以上
             if (mineShaft.mineLevel > 1000) {
-                value = 0.14;
+                value = 0.0056;
             }
             // 采石场矿井
             if (mineShaft.isQuarryArea) {
-                value = 0.105;
+                value = 0.0042;
             }
             // 感染层
             if (mineShaft.isSlimeArea) {
-                value += 0.07;
+                value += 0.0028;
             }
             // 地牢层
             if (mineShaft.isMonsterArea) {
-                value += 0.14;
+                value += 0.0056;
             }
             // 史前层
             if (mineShaft.isDinoArea) {
-                value += 0.14;
+                value += 0.0056;
             }
             // 危险矿井
             if (mineShaft.GetAdditionalDifficulty() > 0) {
-                value += 0.07;
+                // 骷髅矿井
+                if (mineShaft.mineLevel > 120) {
+                    value += 0.0056;
+                } else {
+                    value += 0.0028;
+                }
             }
         }
         // 火山矿井
         else if (location is VolcanoDungeon) {
-            value = 0.07;
+            value = 0.0028;
         }
-        var delta = Game1.timeOfDay - lastTime;
-        player.setSanity(player.getSanity() - value * delta);
-        lastTime = Game1.timeOfDay;
-    } 
+
+        if (value > 0) {
+            player.setSanity(player.getSanity() - value * (1 + deviation));
+            Console.WriteLine($"mineshaft: time: {time}, deviation: {deviation}");
+        }
+        
+        deviation = 0;
+    }
+
+    public static void sync(long time, long delta) {
+        deviation += delta;
+        update(time);
+    }
 }

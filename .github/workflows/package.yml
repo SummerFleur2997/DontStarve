@@ -1,0 +1,22 @@
+﻿name: Package
+on:
+  push:
+    branches: [ master ]
+  release:
+    types: [ created ]
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0'
+      - run: dotnet build -c Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DontStarve
+          path: 'DontStarve/bin/Release/net6.0/DontStarve 1.0.0.zip'

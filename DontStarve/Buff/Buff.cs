@@ -1,15 +1,16 @@
-﻿using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-
-namespace DontStarve.Buff;
+﻿namespace DontStarve.Buff;
 
 internal static class Buff {
-    public static void update(object? sender, OneSecondUpdateTickingEventArgs? e) {
-        if (!Context.IsWorldReady || !Game1.shouldTimePass()) return;
+    public static void update(long time) {
         Electric.update();
-        Health.update();
-        Stamina.update();
-        Sanity.update();
+        Health.update(time);
+        Stamina.update(time);
+        Sanity.update(time);
+    }
+
+    public static void sync(long time, long delta) {
+        Health.sync(time, delta);
+        Stamina.sync(time, delta);
+        Sanity.sync(time, delta);
     }
 }

@@ -10,8 +10,7 @@ public static class Wearing {
     private static Dictionary<string, double> bootsSanity = null!;
     private static Dictionary<string, double> ringSanity = null!;
     private static Dictionary<string, double> trinketSanity = null!;
-    
-    private static int lastTime = Game1.timeOfDay;
+    private static long deviation;
 
     public static void init(IModHelper helper) {
         hatSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/hat.json");
@@ -21,58 +20,71 @@ public static class Wearing {
         pantsSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/pants.json");
         trinketSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/trinket.json");
     }
-    
-    public static void update() {
+
+    public static void update(long time) {
         var player = Game1.player;
-        var delta = Game1.timeOfDay - lastTime;
+        
+        if (deviation < 0) {
+            deviation++;
+            return;
+        }
+        
+        var sanity = 0.0;
+        
         var hat = player.hat.Value;
         if (hat != null) {
-            if (hatSanity.TryGetValue(hat.ItemId, out var hatValue)) {
-                player.setSanity(player.getSanity() - hatValue * delta);
+            if (hatSanity.TryGetValue(hat.ItemId, out var value)) {
+                sanity += value;
             }
         }
 
         var shirt = player.shirtItem.Value;
         if (shirt != null) {
-            if (shirtSanity.TryGetValue(shirt.ItemId, out var shirtValue)) {
-                player.setSanity(player.getSanity() - shirtValue * delta);
+            if (shirtSanity.TryGetValue(shirt.ItemId, out var value)) {
+                sanity += value;
             }
         }
 
         var pants = player.pantsItem.Value;
         if (pants != null) {
-            if (pantsSanity.TryGetValue(pants.ItemId, out var pantsValue)) {
-                player.setSanity(player.getSanity() - pantsValue * delta);
+            if (pantsSanity.TryGetValue(pants.ItemId, out var value)) {
+                sanity += value;
             }
         }
 
         var boots = player.boots.Value;
         if (boots != null) {
-            if (bootsSanity.TryGetValue(boots.ItemId, out var bootsValue)) {
-                player.setSanity(player.getSanity() - bootsValue * delta);
+            if (bootsSanity.TryGetValue(boots.ItemId, out var value)) {
+                sanity += value;
             }
         }
 
         var leftRing = player.leftRing.Value;
         if (leftRing != null) {
-            if (ringSanity.TryGetValue(leftRing.ItemId, out var leftRingValue)) {
-                player.setSanity(player.getSanity() - leftRingValue * delta);
+            if (ringSanity.TryGetValue(leftRing.ItemId, out var value)) {
+                sanity += value;
             }
         }
 
         var rightRing = player.rightRing.Value;
         if (rightRing != null) {
-            if (ringSanity.TryGetValue(rightRing.ItemId, out var rightRingValue)) {
-                player.setSanity(player.getSanity() - rightRingValue * delta);
+            if (ringSanity.TryGetValue(rightRing.ItemId, out var value)) {
+                sanity += value;
             }
         }
 
-        foreach (var (id, trinketValue) in trinketSanity) {
-            if (player.hasTrinketWithID(id)) {
-                player.setSanity(player.getSanity() - trinketValue * delta);
+        var trinket = player.trinketItems.FirstOrDefault();
+        if (trinket != null) {
+            if (trinketSanity.TryGetValue(trinket.ItemId, out var value)) {
+                sanity += value;
             }
         }
         
-        lastTime = Game1.timeOfDay;
+        player.setSanity(player.getSanity() + sanity * (1 + deviation));
+    }
+    
+    public static void sync(long time, long delta) {
+        deviation += delta;
+        update(time);
     }
 }
