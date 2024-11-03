@@ -87,4 +87,19 @@ public static class Wearing {
         deviation += delta;
         update(time);
     }
+    
+    public static void load(IModHelper helper) {
+        var data = helper.Data.ReadSaveData<WearingData>("DontStarve.Sanity.Wearing");
+        deviation = data?.deviation ?? 0;
+    }
+
+    public static void save(IModHelper helper) {
+        helper.Data.WriteSaveData("DontStarve.Sanity.Wearing", new WearingData {
+            deviation = deviation
+        });
+    }
+}
+
+internal class WearingData {
+    internal long deviation { get; init; }
 }

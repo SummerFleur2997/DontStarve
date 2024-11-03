@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using StardewModdingAPI;
+using StardewValley;
 
 namespace DontStarve.Sanity;
 
@@ -22,7 +23,8 @@ public static class Night {
             Season.Spring => 20 * GameTime.TICKS_PER_HOUR,
             Season.Summer => 20 * GameTime.TICKS_PER_HOUR,
             Season.Fall => 19 * GameTime.TICKS_PER_HOUR,
-            Season.Winter => 18 * GameTime.TICKS_PER_HOUR
+            Season.Winter => 18 * GameTime.TICKS_PER_HOUR,
+            _ => throw new Exception("Unknown Season")
         };
 
         const long midnightEnd = 6 * GameTime.TICKS_PER_HOUR;
@@ -59,18 +61,34 @@ public static class Night {
         }
 
         var nightfallSanity = nightfallTime * 0.0014;
-        var midnightSanity = midnightTime * 0.007;
+        var midnightSanity = midnightTime * (Game1.currentLocation.IsOutdoors ? 0.007 : 0.0014);
         var value = nightfallSanity + midnightSanity;
         if (value > 0) {
             player.setSanity(player.getSanity() - value);
-            Console.WriteLine($"night: time: {time}, deviation: {deviation}");
+            Console.WriteLine($"night: time: {time}({timeOfDay}), lastTime: {lastTimeOfDay}, deviation: {deviation}, value: {value}");
         }
 
         deviation = 0;
     }
 
     public static void sync(long time, long delta) {
+        Console.WriteLine($"night sync: time: {time}, delta: {delta}");
         deviation += delta;
         update(time);
     }
+    
+    public static void load(IModHelper helper) {
+        var data = helper.Data.ReadSaveData<NightData>("DontStarve.Sanity.Night");
+        deviation = data?.deviation ?? 0;
+    }
+
+    public static void save(IModHelper helper) {
+        helper.Data.WriteSaveData("DontStarve.Sanity.Night", new NightData {
+            deviation = deviation
+        });
+    }
+}
+
+internal class NightData {
+    internal long deviation { get; init; }
 }

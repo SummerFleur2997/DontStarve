@@ -1,4 +1,6 @@
-﻿using StardewValley;
+﻿using DontStarve.Buff;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace DontStarve.Sanity;
 
@@ -21,4 +23,22 @@ public static class Monster {
         deviation += delta;
         update(time);
     }
+    
+    public static void load(IModHelper helper) {
+        var data = helper.Data.ReadSaveData<MonsterData>("DontStarve.Sanity.Monster");
+        lastTime = data?.lastTime ?? 0;
+        deviation = data?.deviation ?? 0;
+    }
+
+    public static void save(IModHelper helper) {
+        helper.Data.WriteSaveData("DontStarve.Sanity.Monster", new MonsterData {
+            lastTime = lastTime,
+            deviation = deviation
+        });
+    }
+}
+
+internal class MonsterData {
+    internal long lastTime { get; init; }
+    internal long deviation { get; init; }
 }

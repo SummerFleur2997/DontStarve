@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using StardewModdingAPI;
+using StardewValley;
 
 namespace DontStarve.Sanity;
 
@@ -21,4 +22,22 @@ public static class Npc {
         deviation += delta;
         update(time);
     }
+    
+    public static void load(IModHelper helper) {
+        var data = helper.Data.ReadSaveData<NpcData>("DontStarve.Sanity.Npc");
+        lastTime = data?.lastTime ?? 0;
+        deviation = data?.deviation ?? 0;
+    }
+
+    public static void save(IModHelper helper) {
+        helper.Data.WriteSaveData("DontStarve.Sanity.Npc", new NpcData {
+            lastTime = lastTime,
+            deviation = deviation
+        });
+    }
+}
+
+internal class NpcData {
+    internal long lastTime { get; init; }
+    internal long deviation { get; init; }
 }

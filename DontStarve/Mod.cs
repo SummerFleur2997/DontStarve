@@ -9,14 +9,20 @@ internal class Mod : StardewModdingAPI.Mod {
         Sanity.Sanity.init(helper);
 
         helper.Events.GameLoop.GameLaunched += (_, _) => {
-            var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTime")!;
+            var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTimeHelper")!;
             timeApi.onUpdate.Add(Buff.Buff.update);
             timeApi.onSync.Add(Buff.Buff.sync);
             timeApi.onUpdate.Add(Sanity.Sanity.update);
             timeApi.onSync.Add(Sanity.Sanity.sync);
         };
-        helper.Events.GameLoop.SaveLoaded += (_, _) => Sanity.Sanity.load(helper);
-        helper.Events.GameLoop.Saving += (_, _) => Sanity.Sanity.save(helper);
+        helper.Events.GameLoop.SaveLoaded += (_, _) => {
+            Buff.Buff.load(helper);
+            Sanity.Sanity.load(helper);
+        };
+        helper.Events.GameLoop.Saving += (_, _) => {
+            Buff.Buff.save(helper);
+            Sanity.Sanity.save(helper);
+        };
         helper.Events.Display.RenderingHud += Hud.OnRenderingHud;
     }
 }

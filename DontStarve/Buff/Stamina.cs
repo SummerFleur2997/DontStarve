@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using StardewModdingAPI;
+using StardewValley;
 
 namespace DontStarve.Buff;
 
@@ -37,4 +38,25 @@ internal static class Stamina {
         deviation += delta;
         update(time);
     }
+    
+    public static void load(IModHelper helper) {
+        var data = helper.Data.ReadSaveData<StaminaData>("DontStarve.Buff.Stamina");
+        lastHasBuff = data?.lastHasBuff ?? false;
+        lastTime = data?.lastTime ?? 0;
+        deviation = data?.deviation ?? 0;
+    }
+
+    public static void save(IModHelper helper) {
+        helper.Data.WriteSaveData("DontStarve.Buff.Stamina", new StaminaData {
+            lastHasBuff = lastHasBuff,
+            lastTime = lastTime,
+            deviation = deviation
+        });
+    }
+}
+
+internal class StaminaData {
+    internal bool lastHasBuff { get; init; }
+    internal long lastTime { get; init; }
+    internal long deviation { get; init; }
 }

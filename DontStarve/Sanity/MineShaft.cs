@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Locations;
 
 namespace DontStarve.Sanity;
@@ -64,14 +65,30 @@ public static class MineShaft {
 
         if (value > 0) {
             player.setSanity(player.getSanity() - value * (1 + deviation));
-            Console.WriteLine($"mineshaft: time: {time}, deviation: {deviation}");
+            Console.WriteLine($"mineshaft: time: {time}, deviation: {deviation}, value: {value * (1 + deviation)}({value})");
         }
         
         deviation = 0;
     }
 
     public static void sync(long time, long delta) {
+        Console.WriteLine($"mineshaft sync: time: {time}, delta: {delta}");
         deviation += delta;
         update(time);
     }
+    
+    public static void load(IModHelper helper) {
+        var data = helper.Data.ReadSaveData<MineShaftData>("DontStarve.Sanity.MineShaft");
+        deviation = data?.deviation ?? 0;
+    }
+
+    public static void save(IModHelper helper) {
+        helper.Data.WriteSaveData("DontStarve.Sanity.MineShaft", new MineShaftData {
+            deviation = deviation
+        });
+    }
+}
+
+internal class MineShaftData {
+    internal long deviation { get; init; }
 }
