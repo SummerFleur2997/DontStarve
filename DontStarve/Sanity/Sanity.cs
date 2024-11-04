@@ -6,16 +6,15 @@ namespace DontStarve.Sanity;
 public static class Sanity {
     private const double FARMER_MAX_SANITY = 150;
     private static double farmerSanity;
-    private static Dictionary<string, double> foodSanity = null!;
-    private static Dictionary<string, double> monsterSanity = null!;
 
-    public static void init(IModHelper helper) {
-        foodSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/food.json");
-        monsterSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/monster.json");
+    internal static void init(IModHelper helper) {
+        Food.init(helper);
+        Monster.init(helper);
         Wearing.init(helper);
     }
 
-    public static void update(long time) {
+    internal static void update(long time) {
+        Food.update(time);
         Monster.update(time);
         Night.update(time);
         Wearing.update(time);
@@ -23,7 +22,7 @@ public static class Sanity {
         MineShaft.update(time);
     }
 
-    public static void sync(long time, long delta) {
+    internal static void sync(long time, long delta) {
         Monster.sync(time, delta);
         Night.sync(time, delta);
         Wearing.sync(time, delta);
@@ -31,7 +30,7 @@ public static class Sanity {
         MineShaft.sync(time, delta);
     }
     
-    public static void load(IModHelper helper) {
+    internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<SanityData>("DontStarve.Sanity");
         farmerSanity = data?.sanity ?? FARMER_MAX_SANITY;
         Monster.load(helper);
@@ -41,7 +40,7 @@ public static class Sanity {
         MineShaft.load(helper);
     }
 
-    public static void save(IModHelper helper) {
+    internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity", new SanityData {
             sanity = farmerSanity
         });

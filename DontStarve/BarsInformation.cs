@@ -4,11 +4,11 @@ using StardewValley;
 
 namespace DontStarve;
 
-public static class BarsInformation {
+internal static class BarsInformation {
     private static readonly Color fullSanityColor = new(0xFF, 0xC7, 0x00);
     private static readonly Color zeroSanityColor = new(0xA9, 0xA9, 0xA9);
 
-    public static Color sanityColor {
+    internal static Color sanityColor {
         get {
             var player = Game1.player;
             var percent = player.getSanity() / player.getMaxSanity();

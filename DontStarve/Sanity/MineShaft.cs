@@ -4,10 +4,10 @@ using StardewValley.Locations;
 
 namespace DontStarve.Sanity;
 
-public static class MineShaft {
+internal static class MineShaft {
     private static long deviation;
 
-    public static void update(long time) {
+    internal static void update(long time) {
         var player = Game1.player;
         var location = Game1.currentLocation;
 
@@ -71,18 +71,18 @@ public static class MineShaft {
         deviation = 0;
     }
 
-    public static void sync(long time, long delta) {
+    internal static void sync(long time, long delta) {
         Console.WriteLine($"mineshaft sync: time: {time}, delta: {delta}");
         deviation += delta;
         update(time);
     }
     
-    public static void load(IModHelper helper) {
+    internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<MineShaftData>("DontStarve.Sanity.MineShaft");
         deviation = data?.deviation ?? 0;
     }
 
-    public static void save(IModHelper helper) {
+    internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity.MineShaft", new MineShaftData {
             deviation = deviation
         });

@@ -9,7 +9,7 @@ internal static class Health {
     private static long lastTime;
     private static long deviation;
 
-    public static void update(long time) {
+    internal static void update(long time) {
         var player = Game1.player;
         var hasBuff = player.hasBuff(BUFF);
         
@@ -34,19 +34,19 @@ internal static class Health {
         lastHasBuff = hasBuff;
     }
 
-    public static void sync(long time, long delta) {
+    internal static void sync(long time, long delta) {
         deviation += delta;
         update(time);
     }
     
-    public static void load(IModHelper helper) {
+    internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<HealthData>("DontStarve.Buff.Health");
         lastHasBuff = data?.lastHasBuff ?? false;
         lastTime = data?.lastTime ?? 0;
         deviation = data?.deviation ?? 0;
     }
 
-    public static void save(IModHelper helper) {
+    internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Buff.Health", new HealthData {
             lastHasBuff = lastHasBuff,
             lastTime = lastTime,

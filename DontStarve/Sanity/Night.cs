@@ -3,10 +3,10 @@ using StardewValley;
 
 namespace DontStarve.Sanity;
 
-public static class Night {
+internal static class Night {
     private static long deviation;
 
-    public static void update(long time) {
+    internal static void update(long time) {
         var player = Game1.player;
         
         if (deviation < 0) {
@@ -71,18 +71,18 @@ public static class Night {
         deviation = 0;
     }
 
-    public static void sync(long time, long delta) {
+    internal static void sync(long time, long delta) {
         Console.WriteLine($"night sync: time: {time}, delta: {delta}");
         deviation += delta;
         update(time);
     }
     
-    public static void load(IModHelper helper) {
+    internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<NightData>("DontStarve.Sanity.Night");
         deviation = data?.deviation ?? 0;
     }
 
-    public static void save(IModHelper helper) {
+    internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity.Night", new NightData {
             deviation = deviation
         });

@@ -11,8 +11,8 @@ internal class Mod : StardewModdingAPI.Mod {
         helper.Events.GameLoop.GameLaunched += (_, _) => {
             var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTimeHelper")!;
             timeApi.onUpdate.Add(Buff.Buff.update);
-            timeApi.onSync.Add(Buff.Buff.sync);
             timeApi.onUpdate.Add(Sanity.Sanity.update);
+            timeApi.onSync.Add(Buff.Buff.sync);
             timeApi.onSync.Add(Sanity.Sanity.sync);
         };
         helper.Events.GameLoop.SaveLoaded += (_, _) => {

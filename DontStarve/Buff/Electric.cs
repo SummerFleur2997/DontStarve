@@ -7,7 +7,7 @@ internal static class Electric {
     private static bool lastHasBuff;
     private static bool lastHasWeatherAddition;
 
-    public static void update() {
+    internal static void update(double _) {
         var player = Game1.player;
         var hasBuff = player.hasBuff(BUFF);
         if (hasBuff != lastHasBuff) {

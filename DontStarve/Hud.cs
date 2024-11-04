@@ -7,7 +7,7 @@ using StardewValley;
 
 namespace DontStarve;
 
-public static class Hud {
+internal static class Hud {
     private static Vector2 barPosition {
         get {
             var sizeUi = new Vector2(Game1.uiViewport.Width, Game1.uiViewport.Height);
@@ -15,7 +15,7 @@ public static class Hud {
         }
     }
 
-    public static void OnRenderingHud(object? _, RenderingHudEventArgs e) {
+    internal static void OnRenderingHud(object? _, RenderingHudEventArgs e) {
         if (!Context.IsWorldReady || Game1.CurrentEvent != null) return;
 
         var player = Game1.player;

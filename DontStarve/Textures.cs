@@ -4,11 +4,11 @@ using StardewValley;
 
 namespace DontStarve;
 
-public static class Textures {
+internal static class Textures {
     public static Texture2D sanityContainer = null!;
     private static Texture2D backingSanityFiller = null!;
 
-    public static Texture2D sanityFiller {
+    internal static Texture2D sanityFiller {
         get {
             var color = BarsInformation.sanityColor;
             backingSanityFiller.SetData(new[] { color });
@@ -16,7 +16,7 @@ public static class Textures {
         }
     }
 
-    public static void loadTextures(IModContentHelper modContent) {
+    internal static void loadTextures(IModContentHelper modContent) {
         sanityContainer = modContent.Load<Texture2D>("assets/sanity/bar.png");
         backingSanityFiller = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
     }

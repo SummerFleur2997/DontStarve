@@ -3,7 +3,7 @@ using StardewValley;
 
 namespace DontStarve.Sanity;
 
-public static class Wearing {
+internal static class Wearing {
     private static Dictionary<string, double> hatSanity = null!;
     private static Dictionary<string, double> shirtSanity = null!;
     private static Dictionary<string, double> pantsSanity = null!;
@@ -12,7 +12,7 @@ public static class Wearing {
     private static Dictionary<string, double> trinketSanity = null!;
     private static long deviation;
 
-    public static void init(IModHelper helper) {
+    internal static void init(IModHelper helper) {
         hatSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/hat.json");
         bootsSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/boots.json");
         ringSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/ring.json");
@@ -21,7 +21,7 @@ public static class Wearing {
         trinketSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/trinket.json");
     }
 
-    public static void update(long time) {
+    internal static void update(long time) {
         var player = Game1.player;
         
         if (deviation < 0) {
@@ -83,17 +83,17 @@ public static class Wearing {
         player.setSanity(player.getSanity() + sanity * (1 + deviation));
     }
     
-    public static void sync(long time, long delta) {
+    internal static void sync(long time, long delta) {
         deviation += delta;
         update(time);
     }
     
-    public static void load(IModHelper helper) {
+    internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<WearingData>("DontStarve.Sanity.Wearing");
         deviation = data?.deviation ?? 0;
     }
 
-    public static void save(IModHelper helper) {
+    internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity.Wearing", new WearingData {
             deviation = deviation
         });
