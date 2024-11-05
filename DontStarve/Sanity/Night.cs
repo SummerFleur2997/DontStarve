@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using DontStarve.Integration;
+using StardewModdingAPI;
 using StardewValley;
 
 namespace DontStarve.Sanity;
@@ -7,13 +8,12 @@ internal static class Night {
     private static long deviation;
 
     internal static void update(long time) {
-        var player = Game1.player;
-        
         if (deviation < 0) {
             deviation++;
             return;
         }
         
+        var player = Game1.player;
         var timeOfDay = time % GameTime.TICKS_PER_DAY;
         var lastTimeOfDay = (time - (1 + deviation)) % GameTime.TICKS_PER_DAY;
         var nightfallTime = 0L;
@@ -65,14 +65,12 @@ internal static class Night {
         var value = nightfallSanity + midnightSanity;
         if (value > 0) {
             player.setSanity(player.getSanity() - value);
-            Console.WriteLine($"night: time: {time}({timeOfDay}), lastTime: {lastTimeOfDay}, deviation: {deviation}, value: {value}");
         }
 
         deviation = 0;
     }
 
     internal static void sync(long time, long delta) {
-        Console.WriteLine($"night sync: time: {time}, delta: {delta}");
         deviation += delta;
         update(time);
     }

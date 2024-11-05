@@ -1,4 +1,4 @@
-﻿namespace DontStarve;
+﻿namespace DontStarve.Integration;
 
 public interface TickTimeApi {
     public long time { get; }

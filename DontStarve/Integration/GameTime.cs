@@ -1,4 +1,4 @@
-﻿namespace DontStarve;
+﻿namespace DontStarve.Integration;
 
 internal static class GameTime {
     internal const long TICKS_PER_TIMESCALE = 438;

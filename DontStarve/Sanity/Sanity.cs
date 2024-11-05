@@ -1,4 +1,6 @@
-﻿using StardewModdingAPI;
+﻿using DontStarve.Integration;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace DontStarve.Sanity;
@@ -8,12 +10,27 @@ public static class Sanity {
     private static double farmerSanity;
 
     internal static void init(IModHelper helper) {
+        Textures.loadTextures(helper.ModContent);
+        
         Food.init(helper);
         Monster.init(helper);
         Wearing.init(helper);
+        Npc.init(helper);
+
+        helper.Events.GameLoop.GameLaunched += (_, _) => {
+            var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTimeHelper")!;
+            timeApi.onUpdate.Add(update);
+            timeApi.onSync.Add(sync);
+        };
+
+        helper.Events.GameLoop.SaveLoaded += (_, _) => load(helper);
+        helper.Events.GameLoop.Saving += (_, _) => save(helper);
+        helper.Events.GameLoop.TimeChanged += (_, e) => timeChange(e);
+        helper.Events.GameLoop.DayEnding += (_, _) => dayEnding();
+        helper.Events.Display.RenderingHud += (_, e) => Hud.OnRenderingHud(e);
     }
 
-    internal static void update(long time) {
+    private static void update(long time) {
         Food.update(time);
         Monster.update(time);
         Night.update(time);
@@ -22,15 +39,15 @@ public static class Sanity {
         MineShaft.update(time);
     }
 
-    internal static void sync(long time, long delta) {
+    private static void sync(long time, long delta) {
         Monster.sync(time, delta);
         Night.sync(time, delta);
         Wearing.sync(time, delta);
         Npc.sync(time, delta);
         MineShaft.sync(time, delta);
     }
-    
-    internal static void load(IModHelper helper) {
+
+    private static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<SanityData>("DontStarve.Sanity");
         farmerSanity = data?.sanity ?? FARMER_MAX_SANITY;
         Monster.load(helper);
@@ -40,7 +57,7 @@ public static class Sanity {
         MineShaft.load(helper);
     }
 
-    internal static void save(IModHelper helper) {
+    private static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity", new SanityData {
             sanity = farmerSanity
         });
@@ -49,6 +66,14 @@ public static class Sanity {
         Wearing.save(helper);
         Npc.save(helper);
         MineShaft.save(helper);
+    }
+
+    private static void timeChange(TimeChangedEventArgs e) {
+        Sleep.timeChange(e);
+    }
+
+    private static void dayEnding() {
+        Sleep.dayEnding();
     }
 
     public static double getMaxSanity(this Farmer _) => FARMER_MAX_SANITY;
@@ -70,4 +95,4 @@ public static class Sanity {
 
 internal class SanityData {
     internal double? sanity { get; init; }
-} 
+}

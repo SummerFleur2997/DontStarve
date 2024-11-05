@@ -21,14 +21,13 @@ internal static class Wearing {
         trinketSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/trinket.json");
     }
 
-    internal static void update(long time) {
-        var player = Game1.player;
-        
+    internal static void update(long _) {
         if (deviation < 0) {
             deviation++;
             return;
         }
         
+        var player = Game1.player;
         var sanity = 0.0;
         
         var hat = player.hat.Value;

@@ -15,7 +15,7 @@ internal static class Hud {
         }
     }
 
-    internal static void OnRenderingHud(object? _, RenderingHudEventArgs e) {
+    internal static void OnRenderingHud(RenderingHudEventArgs e) {
         if (!Context.IsWorldReady || Game1.CurrentEvent != null) return;
 
         var player = Game1.player;

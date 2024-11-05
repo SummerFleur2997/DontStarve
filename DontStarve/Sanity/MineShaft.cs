@@ -8,14 +8,13 @@ internal static class MineShaft {
     private static long deviation;
 
     internal static void update(long time) {
-        var player = Game1.player;
-        var location = Game1.currentLocation;
-
         if (deviation < 0) {
             deviation++;
             return;
         }
         
+        var player = Game1.player;
+        var location = Game1.currentLocation;
         var value = 0.0;
         if (location is StardewValley.Locations.MineShaft mineShaft) {
             // 矿井
@@ -65,14 +64,12 @@ internal static class MineShaft {
 
         if (value > 0) {
             player.setSanity(player.getSanity() - value * (1 + deviation));
-            Console.WriteLine($"mineshaft: time: {time}, deviation: {deviation}, value: {value * (1 + deviation)}({value})");
         }
         
         deviation = 0;
     }
 
     internal static void sync(long time, long delta) {
-        Console.WriteLine($"mineshaft sync: time: {time}, delta: {delta}");
         deviation += delta;
         update(time);
     }

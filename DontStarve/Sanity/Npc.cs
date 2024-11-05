@@ -4,17 +4,40 @@ using StardewValley;
 namespace DontStarve.Sanity;
 
 internal static class Npc {
+    private static Dictionary<string, double> npcSanity = null!;
     private static long lastTime;
     private static long deviation;
-
+    
+    internal static void init(IModHelper helper) {
+        npcSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/villager.json");
+    }
+    
     internal static void update(long time) {
-        var player = Game1.player;
-        
         if (deviation < 0) {
             deviation++;
             return;
         }
         
+        var player = Game1.player;
+        var location = Game1.currentLocation;
+        var playerPosition = player.Position;
+        var value = 0.0;
+        foreach (var villager in location.characters.Where(npc => npc.IsVillager)) {
+            var villagerPosition = villager.Position;
+            var distance = Math.Sqrt(
+                Math.Pow(villagerPosition.X - playerPosition.X, 2) +
+                Math.Pow(villagerPosition.Y - playerPosition.Y, 2)
+            );
+            var percentage = 1 - distance / 10;
+            if (percentage > 0) {
+                value += npcSanity.GetValueOrDefault(villager.Name, 0);
+            }
+        }
+        
+        if (value > 0) {
+            player.setSanity(player.getSanity() + value);
+        }
+
         lastTime = time;
     }
 

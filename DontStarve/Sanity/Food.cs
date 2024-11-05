@@ -14,13 +14,13 @@ internal static class Food {
 
     internal static void update(double _) {
         var player = Game1.player;
-        if (player.isEating) {
-            lastFood = player.itemToEat;
-            lastEating = true;
-        } else if (lastEating) {
-            lastEating = false;
+        var isEating = player.isEating;
+        if (!isEating && lastEating) {
             var sanity = foodSanity.GetValueOrDefault(lastFood!.ItemId, 0);
             player.setSanity(player.getSanity() + sanity);
         }
+        
+        lastFood = player.itemToEat;
+        lastEating = player.isEating;
     }
 }
