@@ -9,7 +9,7 @@
   "Dependencies": [
     {
       "UniqueID": "Yurin.TickTimeHelper",
-      "MinimumVersion": "1.0.2"
+      "MinimumVersion": "1.0.3"
     }
   ],
   "UpdateKeys": [ "Github:Nyayurin/DontStarve" ]
