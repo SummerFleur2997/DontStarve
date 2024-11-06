@@ -20,17 +20,17 @@ internal static class Monster {
         
         var player = Game1.player;
         var location = Game1.currentLocation;
-        var playerPosition = player.Position;
+        var playerPosition = player.Tile;
         var value = 0.0;
         foreach (var monster in location.characters.Where(npc => npc is StardewValley.Monsters.Monster)) {
-            var monsterPosition = monster.Position;
+            var monsterPosition = monster.Tile;
             var distance = Math.Sqrt(
                 Math.Pow(monsterPosition.X - playerPosition.X, 2) +
                 Math.Pow(monsterPosition.Y - playerPosition.Y, 2)
             );
             var percentage = 1 - distance / 10;
             if (percentage > 0) {
-                value += monsterSanity.GetValueOrDefault(monster.Name, 0);
+                value += monsterSanity.GetValueOrDefault(monster.Name, 0) * percentage;
             }
         }
         

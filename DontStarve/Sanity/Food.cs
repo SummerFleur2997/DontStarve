@@ -4,15 +4,16 @@ using StardewValley;
 namespace DontStarve.Sanity;
 
 internal static class Food {
-    private static Dictionary<string, double> foodSanity = null!;
+    public static Dictionary<string, double> foodSanity { get; private set; } = null!;
     private static Item? lastFood;
     private static bool lastEating;
     
     internal static void init(IModHelper helper) {
         foodSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/food.json");
+        helper.Events.GameLoop.UpdateTicking += (_, _) => update();
     }
 
-    internal static void update(double _) {
+    private static void update() {
         var player = Game1.player;
         var isEating = player.isEating;
         if (!isEating && lastEating) {

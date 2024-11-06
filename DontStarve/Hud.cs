@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace DontStarve;
 
@@ -51,7 +52,7 @@ internal static class Hud {
         );
 
         if (checkMouseHovering()) {
-            var information = $"{(int)sanity}/{(int)maxSanity}";
+            var information = $"{Math.Round(sanity)}/{Math.Round(maxSanity)}";
             var textSize = Game1.dialogueFont.MeasureString(information);
             var textPosition = new Vector2(-12, textSize.X);
 
@@ -69,6 +70,17 @@ internal static class Hud {
                 effects: SpriteEffects.None,
                 layerDepth: 0f
             );
+        }
+
+        if (player.ActiveObject != null) {
+            if (Food.foodSanity.TryGetValue(player.ActiveObject.ItemId, out var foodSanity)) {
+                var sizeUi = new Vector2(Game1.uiViewport.Width, Game1.uiViewport.Height);
+                var text = $"+{foodSanity} Sanity";
+                var textSize = Game1.smallFont.MeasureString(text);
+                var spriteBatch = e.SpriteBatch;
+                IClickableMenu.drawTextureBox(spriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25), (int)(sizeUi.Y) - 125 - (int)(textSize.Y + 25), (int)(textSize.X + 50), (int)(textSize.Y + 40), Color.White * 1, 1, false, 1);
+                Utility.drawTextWithShadow(spriteBatch, text, Game1.smallFont, new Vector2((int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25) + 25, (int)(sizeUi.Y) - 125 - (int)(textSize.Y + 25) + 20), Game1.textColor);
+            }
         }
     }
 

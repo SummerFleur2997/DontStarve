@@ -15,7 +15,6 @@ public static class Sanity {
         Food.init(helper);
         Monster.init(helper);
         Wearing.init(helper);
-        Npc.init(helper);
 
         helper.Events.GameLoop.GameLaunched += (_, _) => {
             var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTimeHelper")!;
@@ -31,7 +30,6 @@ public static class Sanity {
     }
 
     private static void update(long time) {
-        Food.update(time);
         Monster.update(time);
         Night.update(time);
         Wearing.update(time);
