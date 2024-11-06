@@ -16,7 +16,7 @@ internal static class Hud {
         }
     }
 
-    internal static void OnRenderingHud(RenderingHudEventArgs e) {
+    internal static void OnRenderingHud(IModHelper helper, RenderingHudEventArgs e) {
         if (!Context.IsWorldReady || Game1.CurrentEvent != null) return;
 
         var player = Game1.player;
@@ -72,14 +72,35 @@ internal static class Hud {
             );
         }
 
-        if (player.ActiveObject != null) {
-            if (Food.foodSanity.TryGetValue(player.ActiveObject.ItemId, out var foodSanity)) {
+        var activeObject = player.ActiveObject;
+        if (activeObject != null) {
+            if (Food.foodSanity.TryGetValue(activeObject.ItemId, out var foodSanity)) {
                 var sizeUi = new Vector2(Game1.uiViewport.Width, Game1.uiViewport.Height);
-                var text = $"+{foodSanity} Sanity";
+                var text = helper.Translation.Get("sanity-tooltip", new { value = foodSanity });
                 var textSize = Game1.smallFont.MeasureString(text);
                 var spriteBatch = e.SpriteBatch;
-                IClickableMenu.drawTextureBox(spriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25), (int)(sizeUi.Y) - 125 - (int)(textSize.Y + 25), (int)(textSize.X + 50), (int)(textSize.Y + 40), Color.White * 1, 1, false, 1);
-                Utility.drawTextWithShadow(spriteBatch, text, Game1.smallFont, new Vector2((int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25) + 25, (int)(sizeUi.Y) - 125 - (int)(textSize.Y + 25) + 20), Game1.textColor);
+                IClickableMenu.drawTextureBox(
+                    b: spriteBatch,
+                    texture: Game1.menuTexture,
+                    sourceRect: new Rectangle(0, 256, 60, 60),
+                    x: (int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25),
+                    y: (int)sizeUi.Y - 125 - (int)(textSize.Y + 25),
+                    width: (int)(textSize.X + 50),
+                    height: (int)(textSize.Y + 40),
+                    color: Color.White * 1,
+                    scale: 1,
+                    drawShadow: false,
+                    draw_layer: 1
+                );
+                Utility.drawTextWithShadow(
+                    b: spriteBatch,
+                    text: text,
+                    font: Game1.smallFont,
+                    position: new Vector2(
+                        x: (int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25) + 25,
+                        y: (int)sizeUi.Y - 125 - (int)(textSize.Y + 25) + 20),
+                    color: Game1.textColor
+                );
             }
         }
     }

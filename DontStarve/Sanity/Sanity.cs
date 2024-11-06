@@ -26,7 +26,7 @@ public static class Sanity {
         helper.Events.GameLoop.Saving += (_, _) => save(helper);
         helper.Events.GameLoop.TimeChanged += (_, e) => timeChange(e);
         helper.Events.GameLoop.DayEnding += (_, _) => dayEnding();
-        helper.Events.Display.RenderingHud += (_, e) => Hud.OnRenderingHud(e);
+        helper.Events.Display.RenderingHud += (_, e) => Hud.OnRenderingHud(helper, e);
     }
 
     private static void update(long time) {
