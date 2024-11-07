@@ -8,23 +8,26 @@ internal static class Sanity {
     private const string BUFF = "DS_Heal_Sanity";
     private static bool lastHasBuff;
     private static long lastTime;
-    private static long deviation;
+    private static long wait;
 
     internal static void update(long time) {
+        if (wait > 0) {
+            wait--;
+            return;
+        }
+
         var player = Game1.player;
         var hasBuff = player.hasBuff(BUFF);
-        
+
         if (hasBuff && !lastHasBuff) {
             lastTime = time;
-            deviation = 0;
+            wait = 0;
         }
-        
+
         if (lastHasBuff) {
             var delta = time - lastTime;
-            if (delta >= 120 - deviation) {
-                var times = (int)(1 + (delta - (120 - deviation)) / 120);
-                player.setSanity(player.getSanity() + times);
-                deviation = delta - (120 - deviation) - (times - 1) * 120;
+            if (delta >= 3) {
+                player.setSanity(player.getSanity() + 1);
                 lastTime = time;
             }
         }
@@ -33,22 +36,27 @@ internal static class Sanity {
     }
 
     internal static void sync(long time, long delta) {
-        deviation += delta;
-        update(time);
+        if (delta < 0) {
+            wait += -delta;
+        } else {
+            for (var i = 0; i < delta; i++) {
+                update(time);
+            }
+        }
     }
-    
+
     internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<SanityData>("DontStarve.Buff.Stamina");
         lastHasBuff = data?.lastHasBuff ?? false;
         lastTime = data?.lastTime ?? 0;
-        deviation = data?.deviation ?? 0;
+        wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Buff.Stamina", new SanityData {
             lastHasBuff = lastHasBuff,
             lastTime = lastTime,
-            deviation = deviation
+            wait = wait
         });
     }
 }
@@ -56,5 +64,5 @@ internal static class Sanity {
 internal class SanityData {
     internal bool lastHasBuff { get; init; }
     internal long lastTime { get; init; }
-    internal long deviation { get; init; }
+    internal long wait { get; init; }
 }

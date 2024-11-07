@@ -5,16 +5,15 @@ namespace DontStarve.Sanity;
 
 internal static class Monster {
     private static Dictionary<string, double> monsterSanity = null!;
-    private static long lastTime;
-    private static long deviation;
+    private static long wait;
     
     internal static void init(IModHelper helper) {
         monsterSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/monster.json");
     }
 
-    internal static void update(long time) {
-        if (deviation < 0) {
-            deviation++;
+    internal static void update(long _) {
+        if (wait > 0) {
+            wait--;
             return;
         }
         
@@ -37,30 +36,30 @@ internal static class Monster {
         if (value > 0) {
             player.setSanity(player.getSanity() - value);
         }
-        
-        lastTime = time;
     }
 
     internal static void sync(long time, long delta) {
-        deviation += delta;
-        update(time);
+        if (delta < 0) {
+            wait += -delta;
+        } else {
+            for (var i = 0; i < delta; i++) {
+                update(time);
+            }
+        }
     }
     
     internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<MonsterData>("DontStarve.Sanity.Monster");
-        lastTime = data?.lastTime ?? 0;
-        deviation = data?.deviation ?? 0;
+        wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity.Monster", new MonsterData {
-            lastTime = lastTime,
-            deviation = deviation
+            wait = wait
         });
     }
 }
 
 internal class MonsterData {
-    internal long lastTime { get; init; }
-    internal long deviation { get; init; }
+    internal long wait { get; init; }
 }

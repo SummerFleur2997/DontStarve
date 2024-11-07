@@ -17,7 +17,7 @@ public static class Sanity {
         Wearing.init(helper);
 
         helper.Events.GameLoop.GameLaunched += (_, _) => {
-            var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTimeHelper")!;
+            var timeApi = helper.ModRegistry.GetApi<TimeApi>("Yurin.MinuteTimeHelper")!;
             timeApi.onUpdate.Add(update);
             timeApi.onSync.Add(sync);
         };

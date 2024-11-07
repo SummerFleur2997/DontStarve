@@ -10,7 +10,7 @@ internal static class Wearing {
     private static Dictionary<string, double> bootsSanity = null!;
     private static Dictionary<string, double> ringSanity = null!;
     private static Dictionary<string, double> trinketSanity = null!;
-    private static long deviation;
+    private static long wait;
 
     internal static void init(IModHelper helper) {
         hatSanity = helper.ModContent.Load<Dictionary<string, double>>("assets/sanity/hat.json");
@@ -22,11 +22,11 @@ internal static class Wearing {
     }
 
     internal static void update(long _) {
-        if (deviation < 0) {
-            deviation++;
+        if (wait > 0) {
+            wait--;
             return;
         }
-        
+
         var player = Game1.player;
         var sanity = 0.0;
         
@@ -79,26 +79,31 @@ internal static class Wearing {
             }
         }
         
-        player.setSanity(player.getSanity() + sanity * (1 + deviation));
+        player.setSanity(player.getSanity() + sanity);
     }
     
     internal static void sync(long time, long delta) {
-        deviation += delta;
-        update(time);
+        if (delta < 0) {
+            wait += -delta;
+        } else {
+            for (var i = 0; i < delta; i++) {
+                update(time);
+            }
+        }
     }
     
     internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<WearingData>("DontStarve.Sanity.Wearing");
-        deviation = data?.deviation ?? 0;
+        wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity.Wearing", new WearingData {
-            deviation = deviation
+            wait = wait
         });
     }
 }
 
 internal class WearingData {
-    internal long deviation { get; init; }
+    internal long wait { get; init; }
 }

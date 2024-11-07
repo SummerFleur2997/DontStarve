@@ -7,26 +7,29 @@ internal static class Health {
     private const string BUFF = "DS_Heal_Health";
     private static bool lastHasBuff;
     private static long lastTime;
-    private static long deviation;
+    private static long wait;
 
     internal static void update(long time) {
+        if (wait > 0) {
+            wait--;
+            return;
+        }
+
         var player = Game1.player;
         var hasBuff = player.hasBuff(BUFF);
-        
+
         if (hasBuff && !lastHasBuff) {
             lastTime = time;
-            deviation = 0;
+            wait = 0;
         }
 
         if (lastHasBuff) {
             var delta = time - lastTime;
-            if (delta >= 120 - deviation) {
-                var times = (int)(1 + (delta - (120 - deviation)) / 120);
+            if (delta >= 3) {
                 if (player.health < player.maxHealth) {
-                    player.health += Math.Min(2 * times, player.maxHealth - player.health);
+                    player.health += Math.Min(2, player.maxHealth - player.health);
                 }
 
-                deviation = delta - (120 - deviation) - (times - 1) * 120;
                 lastTime = time;
             }
         }
@@ -35,22 +38,27 @@ internal static class Health {
     }
 
     internal static void sync(long time, long delta) {
-        deviation += delta;
-        update(time);
+        if (delta < 0) {
+            wait += -delta;
+        } else {
+            for (var i = 0; i < delta; i++) {
+                update(time);
+            }
+        }
     }
-    
+
     internal static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<HealthData>("DontStarve.Buff.Health");
         lastHasBuff = data?.lastHasBuff ?? false;
         lastTime = data?.lastTime ?? 0;
-        deviation = data?.deviation ?? 0;
+        wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Buff.Health", new HealthData {
             lastHasBuff = lastHasBuff,
             lastTime = lastTime,
-            deviation = deviation
+            wait = wait
         });
     }
 }
@@ -58,5 +66,5 @@ internal static class Health {
 internal class HealthData {
     internal bool lastHasBuff { get; init; }
     internal long lastTime { get; init; }
-    internal long deviation { get; init; }
+    internal long wait { get; init; }
 }

@@ -98,7 +98,8 @@ internal static class Hud {
                     font: Game1.smallFont,
                     position: new Vector2(
                         x: (int)(sizeUi.X / 2) - (int)(textSize.X / 2 + 25) + 25,
-                        y: (int)sizeUi.Y - 125 - (int)(textSize.Y + 25) + 20),
+                        y: (int)sizeUi.Y - 125 - (int)(textSize.Y + 25) + 20
+                    ),
                     color: Game1.textColor
                 );
             }

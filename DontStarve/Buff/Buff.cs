@@ -5,8 +5,10 @@ namespace DontStarve.Buff;
 
 internal static class Buff {
     internal static void init(IModHelper helper) {
+        Electric.init(helper);
+        
         helper.Events.GameLoop.GameLaunched += (_, _) => {
-            var timeApi = helper.ModRegistry.GetApi<TickTimeApi>("Yurin.TickTimeHelper")!;
+            var timeApi = helper.ModRegistry.GetApi<TimeApi>("Yurin.MinuteTimeHelper")!;
             timeApi.onUpdate.Add(update);
             timeApi.onSync.Add(sync);
         };
@@ -16,7 +18,6 @@ internal static class Buff {
     }
 
     private static void update(long time) {
-        Electric.update(time);
         Health.update(time);
         Stamina.update(time);
         Sanity.update(time);

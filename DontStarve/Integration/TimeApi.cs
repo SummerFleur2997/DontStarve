@@ -1,6 +1,6 @@
 ﻿namespace DontStarve.Integration;
 
-public interface TickTimeApi {
+public interface TimeApi {
     public long time { get; }
     public List<Action<long>> onLoad { get; }
     public List<Action<long>> onUpdate { get; }
