@@ -3,7 +3,7 @@ using StardewValley;
 
 namespace DontStarve.Sanity;
 
-internal static class Food {
+internal static class EatFood {
     public static Dictionary<string, double> foodSanity { get; private set; } = null!;
     private static Item? lastFood;
     private static bool lastEating;

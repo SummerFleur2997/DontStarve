@@ -1,3 +1,4 @@
 ﻿{
-  "sanity-tooltip": "+ {{value}} Sanity"
+  "sanity-tooltip": "+ {{value}} Sanity",
+  "hunger-tooltip": "+ {{value}} Hunger"
 }

@@ -10,10 +10,8 @@ public static class Sanity {
     private static double farmerSanity;
 
     internal static void init(IModHelper helper) {
-        Textures.loadTextures(helper.ModContent);
-        
-        Food.init(helper);
-        Monster.init(helper);
+        EatFood.init(helper);
+        NearMonster.init(helper);
         Wearing.init(helper);
 
         helper.Events.GameLoop.GameLaunched += (_, _) => {
@@ -26,44 +24,47 @@ public static class Sanity {
         helper.Events.GameLoop.Saving += (_, _) => save(helper);
         helper.Events.GameLoop.TimeChanged += (_, e) => timeChange(e);
         helper.Events.GameLoop.DayEnding += (_, _) => dayEnding();
-        helper.Events.Display.RenderingHud += (_, e) => Hud.OnRenderingHud(helper, e);
     }
 
     private static void update(long time) {
-        Monster.update(time);
+        NearMonster.update(time);
         Night.update(time);
         Wearing.update(time);
-        Npc.update(time);
+        NearNpc.update(time);
         MineShaft.update(time);
+        SpawnMonster.update(time);
     }
 
     private static void sync(long time, long delta) {
-        Monster.sync(time, delta);
+        NearMonster.sync(time, delta);
         Night.sync(time, delta);
         Wearing.sync(time, delta);
-        Npc.sync(time, delta);
+        NearNpc.sync(time, delta);
         MineShaft.sync(time, delta);
+        SpawnMonster.sync(time, delta);
     }
 
     private static void load(IModHelper helper) {
         var data = helper.Data.ReadSaveData<SanityData>("DontStarve.Sanity");
         farmerSanity = data?.sanity ?? FARMER_MAX_SANITY;
-        Monster.load(helper);
+        NearMonster.load(helper);
         Night.load(helper);
         Wearing.load(helper);
-        Npc.load(helper);
+        NearNpc.load(helper);
         MineShaft.load(helper);
+        SpawnMonster.load(helper);
     }
 
     private static void save(IModHelper helper) {
         helper.Data.WriteSaveData("DontStarve.Sanity", new SanityData {
             sanity = farmerSanity
         });
-        Monster.save(helper);
+        NearMonster.save(helper);
         Night.save(helper);
         Wearing.save(helper);
-        Npc.save(helper);
+        NearNpc.save(helper);
         MineShaft.save(helper);
+        SpawnMonster.save(helper);
     }
 
     private static void timeChange(TimeChangedEventArgs e) {

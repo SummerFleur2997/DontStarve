@@ -4,7 +4,7 @@ using StardewValley.Characters;
 
 namespace DontStarve.Sanity;
 
-internal static class Npc {
+internal static class NearNpc {
     private static long wait;
 
     internal static void update(long _) {
@@ -59,10 +59,7 @@ internal static class Npc {
 
         foreach (var npc in location.characters.Where(npc => npc is Junimo or JunimoHarvester)) {
             var villagerPosition = npc.Position;
-            var distance = Math.Sqrt(
-                Math.Pow(villagerPosition.X - playerPosition.X, 2) +
-                Math.Pow(villagerPosition.Y - playerPosition.Y, 2)
-            );
+            var distance = Util.distance(playerPosition, villagerPosition);
             var percentage = 1 - distance / 10;
             if (percentage > 0) {
                 value += 0.294;
@@ -85,17 +82,17 @@ internal static class Npc {
     }
 
     internal static void load(IModHelper helper) {
-        var data = helper.Data.ReadSaveData<NpcData>("DontStarve.Sanity.Npc");
+        var data = helper.Data.ReadSaveData<NearNpcData>("DontStarve.Sanity.Npc");
         wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
-        helper.Data.WriteSaveData("DontStarve.Sanity.Npc", new NpcData {
+        helper.Data.WriteSaveData("DontStarve.Sanity.Npc", new NearNpcData {
             wait = wait
         });
     }
 }
 
-internal class NpcData {
+internal class NearNpcData {
     internal long wait { get; init; }
 }
