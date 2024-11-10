@@ -71,7 +71,7 @@ internal static class Night {
         if (delta < 0) {
             wait += -delta;
         } else {
-            for (var i = 0; i < delta; i++) {
+            for (var i = 0; i <= delta; i++) {
                 update(time);
             }
         }
