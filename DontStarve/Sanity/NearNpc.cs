@@ -82,12 +82,12 @@ internal static class NearNpc {
     }
 
     internal static void load(IModHelper helper) {
-        var data = helper.Data.ReadSaveData<NearNpcData>("DontStarve.Sanity.Npc");
+        var data = helper.Data.ReadSaveData<NearNpcData>("DontStarve.Sanity.NearNpc");
         wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
-        helper.Data.WriteSaveData("DontStarve.Sanity.Npc", new NearNpcData {
+        helper.Data.WriteSaveData("DontStarve.Sanity.NearNpc", new NearNpcData {
             wait = wait
         });
     }

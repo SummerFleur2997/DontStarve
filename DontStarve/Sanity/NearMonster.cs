@@ -46,12 +46,12 @@ internal static class NearMonster {
     }
     
     internal static void load(IModHelper helper) {
-        var data = helper.Data.ReadSaveData<NearMonsterData>("DontStarve.Sanity.Monster");
+        var data = helper.Data.ReadSaveData<NearMonsterData>("DontStarve.Sanity.NearMonster");
         wait = data?.wait ?? 0;
     }
 
     internal static void save(IModHelper helper) {
-        helper.Data.WriteSaveData("DontStarve.Sanity.Monster", new NearMonsterData {
+        helper.Data.WriteSaveData("DontStarve.Sanity.NearMonster", new NearMonsterData {
             wait = wait
         });
     }

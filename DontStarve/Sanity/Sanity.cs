@@ -32,7 +32,12 @@ public static class Sanity {
         Wearing.update(time);
         NearNpc.update(time);
         MineShaft.update(time);
-        SpawnMonster.update(time);
+        SpawnMrSkitts.update(time);
+        SpawnDarkHand.update(time);
+        SpawnDarkWatcher.update(time);
+        SpawnEye.update(time);
+        SpawnCreeperFear.update(time);
+        SpawnTerrifyingSharpBeak.update(time);
     }
 
     private static void sync(long time, long delta) {
@@ -41,7 +46,12 @@ public static class Sanity {
         Wearing.sync(time, delta);
         NearNpc.sync(time, delta);
         MineShaft.sync(time, delta);
-        SpawnMonster.sync(time, delta);
+        SpawnMrSkitts.sync(time, delta);
+        SpawnDarkHand.sync(time, delta);
+        SpawnDarkWatcher.sync(time, delta);
+        SpawnEye.sync(time, delta);
+        SpawnCreeperFear.sync(time, delta);
+        SpawnTerrifyingSharpBeak.sync(time, delta);
     }
 
     private static void load(IModHelper helper) {
@@ -52,7 +62,12 @@ public static class Sanity {
         Wearing.load(helper);
         NearNpc.load(helper);
         MineShaft.load(helper);
-        SpawnMonster.load(helper);
+        SpawnMrSkitts.load(helper);
+        SpawnDarkHand.load(helper);
+        SpawnDarkWatcher.load(helper);
+        SpawnEye.load(helper);
+        SpawnCreeperFear.load(helper);
+        SpawnTerrifyingSharpBeak.load(helper);
     }
 
     private static void save(IModHelper helper) {
@@ -64,7 +79,12 @@ public static class Sanity {
         Wearing.save(helper);
         NearNpc.save(helper);
         MineShaft.save(helper);
-        SpawnMonster.save(helper);
+        SpawnMrSkitts.save(helper);
+        SpawnDarkHand.save(helper);
+        SpawnDarkWatcher.save(helper);
+        SpawnEye.save(helper);
+        SpawnCreeperFear.save(helper);
+        SpawnTerrifyingSharpBeak.save(helper);
     }
 
     private static void timeChange(TimeChangedEventArgs e) {
