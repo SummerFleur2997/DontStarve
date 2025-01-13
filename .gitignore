@@ -1,5 +1,21 @@
-﻿/.idea
-/DontStarve/bin/
-/DontStarve/obj/
+﻿.idea
+bin
+obj
 
-/DontStarve.sln.DotSettings.user
+DontStarve.sln.DotSettings.user
+
+*.iml
+.gradle
+.kotlin
+.DS_Store
+build
+*/build
+captures
+.externalNativeBuild
+.cxx
+local.properties
+xcuserdata/
+Pods/
+*yarn.lock
+
+DontStarve.Kotlin.dll

@@ -10,4 +10,9 @@
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.0"/>
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="xcopy /y $(ProjectDir)DontStarve.Kotlin.dll  $(ProjectDir)$(OutDir)" />
+    </Target>
+    
 </Project>
