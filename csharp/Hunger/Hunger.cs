@@ -1,4 +1,5 @@
 ﻿using DontStarve.Integration;
+using kotlin;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -21,12 +22,14 @@ public static class Hunger {
 		helper.Events.GameLoop.Saving += (_, _) => save(helper);
 	}
 
-	private static void update(long time) {
+	private static Unit update(long time) {
 		TimeCycle.update(time);
+		return Unit.INSTANCE;
 	}
 
-	private static void sync(long time, long delta) {
+	private static Unit sync(long time, long delta) {
 		TimeCycle.sync(time, delta);
+		return Unit.INSTANCE;
 	}
 
 	private static void load(IModHelper helper) {

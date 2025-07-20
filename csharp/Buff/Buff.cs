@@ -1,4 +1,5 @@
 ﻿using DontStarve.Integration;
+using kotlin;
 using StardewModdingAPI;
 
 namespace DontStarve.Buff;
@@ -17,16 +18,18 @@ internal static class Buff {
 		helper.Events.GameLoop.Saving += (_, _) => save(helper);
 	}
 
-	private static void update(long time) {
+	private static Unit update(long time) {
 		Health.update(time);
 		Stamina.update(time);
 		Sanity.update(time);
+		return Unit.INSTANCE;
 	}
 
-	private static void sync(long time, long delta) {
+	private static Unit sync(long time, long delta) {
 		Health.sync(time, delta);
 		Stamina.sync(time, delta);
 		Sanity.sync(time, delta);
+		return Unit.INSTANCE;
 	}
 
 	private static void load(IModHelper helper) {
