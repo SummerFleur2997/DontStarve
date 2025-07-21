@@ -1,10 +1,8 @@
-﻿using kotlin;
-
-namespace DontStarve.Integration;
+﻿namespace DontStarve.Integration;
 
 public interface TimeApi {
 	public long time { get; }
-	public IList<Func<long, Unit>> onLoad { get; }
-	public IList<Func<long, Unit>> onUpdate { get; }
-	public IList<Func<long, long, Unit>> onSync { get; }
+	public IList<Action<long>> onLoad { get; }
+	public IList<Action<long>> onUpdate { get; }
+	public IList<Action<long, long>> onSync { get; }
 }

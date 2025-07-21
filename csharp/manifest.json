@@ -9,7 +9,7 @@
 	"Dependencies": [
 		{
 			"UniqueID": "Yurin.MinuteTimeHelper",
-			"MinimumVersion": "1.0.4"
+			"MinimumVersion": "1.0.5"
 		}
 	],
 	"UpdateKeys": [

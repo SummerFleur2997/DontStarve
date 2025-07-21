@@ -1,5 +1,4 @@
 ﻿using DontStarve.Integration;
-using kotlin;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -27,7 +26,7 @@ public static class Sanity {
 		helper.Events.GameLoop.DayEnding += (_, _) => dayEnding();
 	}
 
-	private static Unit update(long time) {
+	private static void update(long time) {
 		NearMonster.update(time);
 		Night.update(time);
 		Wearing.update(time);
@@ -39,10 +38,9 @@ public static class Sanity {
 		SpawnEye.update(time);
 		SpawnCreeperFear.update(time);
 		SpawnTerrifyingSharpBeak.update(time);
-		return Unit.INSTANCE;
 	}
 
-	private static Unit sync(long time, long delta) {
+	private static void sync(long time, long delta) {
 		NearMonster.sync(time, delta);
 		Night.sync(time, delta);
 		Wearing.sync(time, delta);
@@ -54,7 +52,6 @@ public static class Sanity {
 		SpawnEye.sync(time, delta);
 		SpawnCreeperFear.sync(time, delta);
 		SpawnTerrifyingSharpBeak.sync(time, delta);
-		return Unit.INSTANCE;
 	}
 
 	private static void load(IModHelper helper) {
