@@ -1,4 +1,4 @@
 ﻿{
-  "sanity-tooltip": "+ {{value}} 理智",
-  "hunger-tooltip": "+ {{value}} 饥饿"
+    "sanity-tooltip": "+ {{value}} 理智",
+    "hunger-tooltip": "+ {{value}} 饥饿"
 }
