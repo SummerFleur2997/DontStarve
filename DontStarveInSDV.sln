@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = ".Common", "Common\.Common.shproj", "{4510AB5A-755B-4828-8198-B2975F8203A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DontStarve", "DontStarve\DontStarve.csproj", "{6C2109EE-9355-4E64-B423-4E93A98A3696}"
+EndProject
+
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common.projitems*{4510AB5A-755B-4828-8198-B2975F8203A2}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C2109EE-9355-4E64-B423-4E93A98A3696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C2109EE-9355-4E64-B423-4E93A98A3696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C2109EE-9355-4E64-B423-4E93A98A3696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C2109EE-9355-4E64-B423-4E93A98A3696}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
